@@ -1,0 +1,24 @@
+# 1. Base image
+FROM python:3.11-slim
+
+# 2. Set Python environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+# 3. Create main app dir
+WORKDIR /app
+
+# 4. Copy requirements file
+COPY requirements.txt ./
+
+# 5. Install python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 6. Copy app code
+COPY app.py .
+
+# 7. Copy assets
+COPY methods methods
+
+# 8. Domyślne polecenie uruchomienia
+ENTRYPOINT ["python", "app.py"]

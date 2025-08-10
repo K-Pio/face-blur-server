@@ -1,0 +1,5 @@
+numpy
+numba
+matplotlib
+pillow
+requests

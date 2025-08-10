@@ -1,0 +1,32 @@
+# 1. Base image
+FROM python:3.11
+
+# 2. Set Python environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+# 3. Install libGL
+RUN apt update && apt install -y libgl1 && rm -rf /var/lib/apt/lists/*
+RUN apt install -y libglib2.0-0 && rm -rf /var/lib/apt/lists/*
+
+# 4. Create main app dir
+WORKDIR /app
+
+# 5. Copy requirements file
+COPY requirements.txt ./
+
+# 6. Install python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 7. Copy app code
+COPY app.py face_detector.py .
+
+# 8. Copy assets
+COPY models models
+COPY templates templates
+
+# 9. Expose port
+EXPOSE 5000
+
+# 10. Default command
+CMD ["python", "app.py"]

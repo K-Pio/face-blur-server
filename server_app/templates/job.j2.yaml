@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: resize-job-{{ id }}
+spec:
+  template:
+    spec:
+      containers:
+        - name: worker
+          image: blur-faceblur:1.00
+          command: ["python", "/app/app.py"]
+          # resources:
+          #   limits:
+          #     nvidia.com/gpu: 1
+          args:
+            - "{{ param1 }}"
+            - "{{ param2 }}"
+            - "{{ param3 }}"
+            - "{{ param4 }}"
+            - "{{ param5 }}"
+            - "{{ param6 }}"
+            - "{{ param7 }}"
+            - "{{ param8 }}"
+          volumeMounts:
+            - name: data-vol
+              mountPath: /app/data
+      volumes:
+        - name: data-vol
+          hostPath:
+            path: /mnt/data
+            type: DirectoryOrCreate
+      restartPolicy: Never

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: blur-svc
+spec:
+  type: NodePort
+  selector:
+    app: blur
+  ports:
+    - port: 80                # port - Minikube claster
+      targetPort: 5000        # port - Flask app
+      nodePort: 30080         # port - Minikube node

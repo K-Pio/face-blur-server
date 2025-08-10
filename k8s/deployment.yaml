@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blur-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blur
+  template:
+    metadata:
+      labels:
+        app: blur
+    spec:
+      serviceAccountName: job-creator-sa
+      containers:
+        - name: server-container
+          image: blur-server:1.00
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: data-vol
+              mountPath: /app/data
+              #subPath: data.json
+      volumes:
+        - name: data-vol
+          hostPath:
+            path: /mnt/data
+            type: DirectoryOrCreate
